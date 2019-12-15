@@ -1,0 +1,74 @@
+version: 2
+
+jobs:
+
+  build-test-deploy:
+    docker:
+      - image: circleci/node:12
+
+    working_directory: ~/melvyn-node-starter
+
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Combat Preparation
+          command: |
+            docker-compose up -d app
+            docker-compose exec -d app yarn start:local
+
+      - run:
+          name: Compile Code
+          command: docker-compose exec app yarn build
+
+      - run:
+          name: Code Quality
+          command: docker-compose exec app yarn lint
+
+      - run:
+          name: Code Specification
+          command: |
+            docker-compose exec app yarn unit
+            docker-compose exec app yarn _codecov --token=$CODECOV_TOKEN
+
+      # - run:
+      #     name: E2E Specification
+      #     command: |
+      #       docker-compose exec app sh -c "sleep 10"
+      #       docker-compose exec app yarn e2e
+
+      - run:
+          name: Deploy Application
+          command: |
+            case "${CIRCLE_BRANCH}" in
+              "develop"|*"release"*|"master")
+                case "$CIRCLE_BRANCH" in
+                  "develop")
+                    APP_NAME=${APP_NAME}
+                    DEPLOYMENT_ENVIRONMENT=develop
+                    ;;
+                  *"release"*)
+                    APP_NAME=${APP_NAME}
+                    DEPLOYMENT_ENVIRONMENT=staging
+                    ;;
+                  "master")
+                    APP_NAME=${APP_NAME}
+                    DEPLOYMENT_ENVIRONMENT=production
+                    ;;
+                esac
+
+                echo "${HEROKU_TOKEN}" | docker login -u "${HEROKU_USERNAME}" --password-stdin registry.heroku.com
+                docker build -f ./tools/$DEPLOYMENT_ENVIRONMENT.Dockerfile -t $APP_NAME .
+                docker tag $APP_NAME registry.heroku.com/$APP_NAME/web
+                docker push registry.heroku.com/$APP_NAME/web
+                docker-compose exec -e HEROKU_API_KEY=$HEROKU_TOKEN app yarn _heroku container:release web -a $APP_NAME
+                ;;
+            esac
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - build-test-deploy

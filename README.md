@@ -1,0 +1,379 @@
+melvyn-node-starter
+---------------------
+
+# NOTE
+
+This is a clone version with no documentations added. Please be advised there are many changes made from the original repo at [melvyn-node-starter](https://github.com/melvynkim/melvyn-node-starter)
+
+# ABOUT
+
+:truck: A boilerplate for Node.js, Express, Mongoose, Heroku, mLab, Nodemon, PM2, and Babel.
+
+[![Build Status](https://circleci.com/gh/melvynkim/melvyn-node-starter/tree/master.svg?style=svg)](https://circleci.com/gh/melvynkim/melvyn-node-starter/tree/master)
+[![codecov](https://codecov.io/gh/melvynkim/melvyn-node-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/melvynkim/melvyn-node-starter)
+[![Dependency Status](https://img.shields.io/david/melvynkim/melvyn-node-starter.svg)](https://david-dm.org/melvynkim/melvyn-node-starter)
+[![devDependency Status](https://img.shields.io/david/dev/melvynkim/melvyn-node-starter.svg)](https://david-dm.org/melvynkim/melvyn-node-starter?type=dev)
+
+:rainbow: [Live Demo](https://melvyn-node-starter.herokuapp.com/)
+
+This seed repository provides the following features:
+
+* ---------- **Essentials** ----------
+* [x] Application routing with [**Express**](http://expressjs.com/).
+* [x] Object document mapping with [**Mongoose**](http://mongoosejs.com/).
+* [x] Utility functions with [**Lodash**](https://lodash.com/).
+* [x] Authenticate requests with [**Passport**](http://passportjs.org/).
+* [x] Real-time bidirectional communication with [**Socket.IO**](https://socket.io/).
+* [x] In-memory data structure store with [**Redis**](https://redis.io/).
+* [X] Jobs and messages with [**Bull**](https://github.com/OptimalBits/bull).
+* [x] Online payments with [**Stripe**](https://stripe.com/).
+* [x] OpenAPI specification with [**Swagger**](https://swagger.io/).
+* ---------- **Tools** ----------
+* [x] Next generation JavaScript with [**Babel**](https://github.com/babel/babel).
+* [x] JavaScript static code analyzer with [**ESLint**](https://github.com/eslint/eslint).
+* [x] Unit testing with [**Jest**](https://github.com/facebook/jest).
+* [x] End-to-End testing with [**Supertest**](https://github.com/visionmedia/supertest).
+* [x] Test coverage integration with [**Codecov**](https://codecov.io/).
+* [x] Automatically restart application with [**Nodemon**](https://github.com/remy/nodemon).
+* [x] Keeping application alive with [**PM2**](https://github.com/Unitech/pm2).
+* ---------- **Environments** ----------
+* [x] JavaScript runtime with [**Node.js**](https://nodejs.org/).
+* [x] Fast and deterministic builds with [**Yarn**](https://github.com/yarnpkg/yarn).
+* [x] Version control with [**Git**](https://github.com/git/git).
+* [x] Code repository with [**GitHub**](https://github.com/).
+* [x] Cloud application hosting with [**Heroku**](https://www.heroku.com/).
+* [x] Cloud NoSQL database hosting with [**mLab**](https://mlab.com/).
+* [x] Cloud storage‎ hosting with [**Cloudinary**](https://cloudinary.com/).
+* [x] Cloud memory cache hosting with [**RedisLabs**](https://redislabs.com/).
+* [x] API gateway service with [**WSO2**](https://wso2.com/).
+* [x] Centralized logging and analysis service with [**LogDNA**](https://logdna.com/).
+* [x] Error tracking service with [**Sentry**](https://sentry.io/).
+* [x] Performance and security with [**Cloudflare**](https://www.cloudflare.com/).
+* [x] Software container with [**Docker**](https://github.com/docker/docker).
+* [x] Continuous integration with [**CircleCI**](https://circleci.com/).
+
+Thinking in ...
+
+* [x] REST Stack
+* [x] Microservices
+
+## Table of Contents
+
+- [NOTE](#note)
+- [ABOUT](#about)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+  - [Dockerization](#dockerization)
+  - [Configuration](#configuration)
+    - [Default environments](#default-environments)
+    - [Deployment environments](#deployment-environments)
+  - [Using Libraries](#using-libraries)
+  - [Directory Structure](#directory-structure)
+
+## Getting Started
+
+Follow steps to execute this boilerplate.
+
+1. Clone this boilerplate
+
+```bash
+$ git clone --depth 1 https://github.com/melvynkim/melvyn-node-starter.git <PROJECT_NAME>
+$ cd <PROJECT_NAME>
+```
+
+2. Install dependencies
+
+```bash
+$ yarn install
+```
+
+3. Start a local server
+
+```bash
+$ yarn start
+```
+
+4. Compile code
+
+```bash
+$ yarn build
+```
+
+5. Check code quality
+
+```bash
+$ yarn lint
+```
+
+6. Runs unit tests
+
+```bash
+$ yarn unit
+```
+
+7. Runs end-to-end tests
+
+```bash
+$ yarn e2e
+```
+
+## Dockerization
+
+Dockerize an application.
+
+1. Build and run the container in the background
+
+```bash
+$ docker-compose up -d app
+```
+
+2. Run a command in a running container
+
+```bash
+$ docker-compose exec app <COMMAND>
+```
+
+3. Remove the old container before creating the new one
+
+```bash
+$ docker-compose rm -fs
+```
+
+4. Restart up the container in the background
+
+```bash
+$ docker-compose up -d --build app
+```
+
+5. Push images to Docker Cloud
+
+```diff
+# .gitignore
+
+  .DS_Store
+  node_modules
+  dist
+  coverage
++ dev.Dockerfile
++ stage.Dockerfile
++ prod.Dockerfile
+  *.log
+```
+
+```bash
+$ docker login
+$ docker build -f ./tools/<dev|stage|prod>.Dockerfile -t <IMAGE_NAME>:<IMAGE_TAG> .
+
+# checkout
+$ docker images
+
+$ docker tag <IMAGE_NAME>:<IMAGE_TAG> <DOCKER_ID_USER>/<IMAGE_NAME>:<IMAGE_TAG>
+$ docker push <DOCKER_ID_USER>/<IMAGE_NAME>:<IMAGE_TAG>
+
+# remove
+$ docker rmi <REPOSITORY>:<TAG>
+# or
+$ docker rmi <IMAGE_ID>
+```
+
+6. Pull images from Docker Cloud
+
+```diff
+# circle.yml
+
+  echo "${HEROKU_TOKEN}" | docker login -u "${HEROKU_USERNAME}" --password-stdin registry.heroku.com
+- docker build -f ./tools/$DEPLOYMENT_ENVIRONMENT.Dockerfile -t $APP_NAME .
++ docker pull <DOCKER_ID_USER>/<IMAGE_NAME>:<IMAGE_TAG>
+- docker tag $APP_NAME registry.heroku.com/$APP_NAME/web
++ docker tag <IMAGE_NAME>:<IMAGE_TAG> registry.heroku.com/<HEROKU_PROJECT>/web
+  docker push registry.heroku.com/<HEROKU_PROJECT>/web
+```
+
+## Configuration
+
+### Default environments
+
+Set your local environment variables.
+
+```js
+// src/env.js
+
+export const NODE_ENV = process.env.NODE_ENV || 'development';
+
+export const HOST = process.env.HOST || '0.0.0.0';
+export const PORT = process.env.PORT || 3000;
+
+export const SECRET = process.env.SECRET || 'PUT_YOUR_SECRET_HERE';
+
+export const MONGODB_URI = process.env.MONGODB_URI || '<PUT_YOUR_MONGODB_URI_HERE>';
+export const POSTGRES_URL = process.env.POSTGRES_URL || 'PUT_YOUR_POSTGRES_URL_HERE';
+
+export const REDIS_PORT = process.env.REDIS_PORT || '<PUT_YOUR_REDIS_PORT_HERE>';
+export const REDIS_HOST = process.env.REDIS_HOST || '<PUT_YOUR_REDIS_HOST_HERE>';
+
+// ...
+```
+
+### Deployment environments
+
+Set your deployment environment variables.
+
+```dockerfile
+# tools/<dev|stage|prod>.Dockerfile
+
+# envs --
+ENV SECRET <PUT_YOUR_SECRET_HERE>
+
+ENV MONGODB_URI <PUT_YOUR_MONGODB_URI>
+ENV POSTGRES_URL <PUT_YOUR_POSTGRES_URL_HERE>
+
+ENV REDIS_PORT <PUT_YOUR_REDIS_PORT_HERE>
+ENV REDIS_HOST <PUT_YOUR_REDIS_HOST_HERE>
+
+# ...
+# -- envs
+```
+
+## Using Libraries
+
+1. Example of REST
+
+```js
+import { Router } from 'express';
+
+import { List } from './document';
+
+const router = Router();
+
+router.get('/', async (req, res) => {
+  const data = await List.find({}).exec();
+  res.json(data);
+});
+
+export default router;
+```
+
+2. Example of Document
+
+```js
+import mongoose, { Schema } from 'mongoose';
+
+const listSchema = new Schema({
+  text: {
+    type: String,
+    required: true,
+  },
+});
+
+export const List = mongoose.model('List', listSchema);
+```
+
+3. Example of Lodash
+
+```js
+import { of } from 'rxjs';
+import { lowerFirst, pad } from 'lodash';
+
+of(lowerFirst('Hello'), pad('World', 5))
+  .subscribe(value => console.log(value));
+  // hello
+  // World
+```
+
+4. Example of ReactiveX
+
+```js
+import { timer, of } from 'rxjs';
+import { mapTo, combineAll } from 'rxjs/operators';
+
+timer(2000)
+  .pipe(
+    mapTo(of('Hello', 'World')),
+    combineAll(),
+  )
+  .subscribe(value => console.log(value));
+  // ["Hello"]
+  // ["World"]
+```
+
+5. Example of Socket
+
+```js
+connSocket.emit('A', { foo: 'bar' });
+connSocket.on('B', data => console.log(data));  // { foo: 'baz' }
+```
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script>
+const socket = io('http://localhost:3000/');
+
+socket.on('connect', () => console.log('Socket: Accept a connection.'));
+
+socket.on('A', (data) => {
+  console.log(data);  // { foo: 'bar' }
+  socket.emit('B', { foo: 'baz' });
+});
+</script>
+```
+
+6. Example of Redis
+
+```js
+import redis from '~/core/redis';
+
+redis.hmset('thing', {
+  foo: 'js',
+  bar: 'html',
+  baz: 'css',
+});
+
+redis.hgetall('thing', (err, object) => {
+  console.log(object);
+});
+```
+
+## Directory Structure
+
+The structure follows the LIFT Guidelines.
+
+```coffee
+.
+├── src
+│   ├── core -> core feature module
+│   ├── <FEATURE> -> feature modules
+│   │   ├── __tests__
+│   │   │   ├── <FEATURE>.e2e-spec.js
+│   │   │   └── <FEATURE>.spec.js
+│   │   ├── _<THING> -> feature of private things
+│   │   │   └── ...
+│   │   └── <FEATURE>.js
+│   ├── <GROUP> -> module group
+│   │   └── <FEATURE> -> feature modules
+│   │       ├── __tests__
+│   │       │   ├── <FEATURE>.e2e-spec.js
+│   │       │   └── <FEATURE>.spec.js
+│   │       ├── _<THING> -> feature of private things
+│   │       │   └── ...
+│   │       └── <FEATURE>.js
+│   ├── shared -> shared feature module
+│   ├── app.js
+│   ├── env.js
+│   └── server.js
+├── tools
+│   └── ...
+├── .editorconfig
+├── .eslintrc
+├── .gitignore
+├── .prettierrc
+├── babel.config
+├── circle.yml
+├── docker-compose.yml
+├── Dockerfile
+├── jest.config.js
+├── LICENSE
+├── package.json
+├── processes.js
+├── README.md
+└── yarn.lock
+```
