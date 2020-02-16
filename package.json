@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Node Starter with Mongo, Redis, Suptertest, Jest and many more",
   "engines": {
-    "node": "13"
+    "node": ">=12"
   },
   "scripts": {
     "start": "node processes.js",
