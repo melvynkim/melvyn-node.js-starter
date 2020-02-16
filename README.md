@@ -21,6 +21,7 @@ This seed repository provides the following features:
 * ---------- **Essentials** ----------
 * [x] Application routing with [**Express**](http://expressjs.com/).
 * [x] Object document mapping with [**Mongoose**](http://mongoosejs.com/).
+* [x] DB migrations with [**Migrate**](https://github.com/tj/node-migrate).
 * [x] Utility functions with [**Lodash**](https://lodash.com/).
 * [x] Authenticate requests with [**Passport**](http://passportjs.org/).
 * [x] Real-time bidirectional communication with [**Socket.IO**](https://socket.io/).
@@ -87,31 +88,37 @@ $ cd <PROJECT_NAME>
 $ yarn install
 ```
 
-3. Start a local server
+3. Migrate DB
 
 ```bash
-$ yarn start
+$ yarn migrate:up
 ```
 
-4. Compile code
+4. Start a local server
+
+```bash
+$ yarn start:local
+```
+
+5. Compile code
 
 ```bash
 $ yarn build
 ```
 
-5. Check code quality
+6. Check code quality
 
 ```bash
 $ yarn lint
 ```
 
-6. Runs unit tests
+7. Runs unit tests
 
 ```bash
 $ yarn unit
 ```
 
-7. Runs end-to-end tests
+8. Runs end-to-end tests
 
 ```bash
 $ yarn e2e

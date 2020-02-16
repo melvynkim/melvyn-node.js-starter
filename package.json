@@ -3,12 +3,15 @@
   "version": "0.0.1",
   "description": "Node Starter with Mongo, Redis, Suptertest, Jest and many more",
   "engines": {
-    "node": "12"
+    "node": "13"
   },
   "scripts": {
     "start": "node processes.js",
     "start:local": "nodemon src/server.js --exec babel-node",
     "build": "babel src -d dist --ignore **/__tests__/**,**/__mocks__/**",
+    "migrate:create": "node_modules/.bin/migrate create --compiler=\"js:@babel/register\"",
+    "migrate:up": "node_modules/.bin/migrate up --compiler=\"js:@babel/register\"",
+    "migrate:down": "node_modules/.bin/migrate down --compiler=\"js:@babel/register\"",
     "lint": "eslint 'src/**/*.js'",
     "unit": "jest \"src/.*\\.js$\" --coverage --forceExit",
     "e2e": "cross-env JEST_ENV=e2e jest \"src/.*\\.js$\" --forceExit",
@@ -38,6 +41,7 @@
     "jsdom": "15.2.0",
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.15",
+    "migrate": "^1.6.2",
     "mongoose": "5.7.5",
     "morgan": "1.9.1",
     "multer": "1.4.2",
@@ -63,6 +67,7 @@
     "@babel/core": "7.4.5",
     "@babel/node": "7.4.5",
     "@babel/preset-env": "7.4.5",
+    "@babel/register": "^7.8.3",
     "babel-eslint": "10.0.3",
     "babel-jest": "24.8.0",
     "babel-plugin-root-import": "6.2.0",
