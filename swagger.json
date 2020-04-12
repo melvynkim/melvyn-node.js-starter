@@ -1,0 +1,8 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "cadenza-sg1-gen-api", 
+		"version": "0.0.1", 
+		"description": "To get Bearer token use `/auth/login` route"
+	}
+}

@@ -10,6 +10,8 @@ import connectRedis from 'connect-redis';
 import rendertron from 'rendertron-middleware';
 import history from 'express-history-api-fallback';
 import Raven from 'raven';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 import routes from '~/core/rest';
 import passport from '~/core/passport';
@@ -49,6 +51,15 @@ if (NODE_ENV === 'production') app.use(Raven.requestHandler());
 app.use('/', routes);
 
 if (NODE_ENV === 'production') app.use(Raven.errorHandler());
+
+/**
+ * @name Serve docs
+ */
+if (SERVE_DOCS) {
+  const swaggerDocument = YAML.load('./swagger.yml');
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 
 /**
  * @name static-files

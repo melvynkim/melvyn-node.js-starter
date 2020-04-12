@@ -1,11 +1,10 @@
-import { User } from '../document';
+import EndpointUser from '../document';
 
 describe('Authorization', () => {
   it('test', async () => {
-    const list = await new User({
-      username: 'melvynkim',
-      password: '1234',
+    const list = await new EndpointUser({
       email: 'melvynkim@gmail.com',
+      password: '1234',
     });
 
     expect(list).toBeTruthy();

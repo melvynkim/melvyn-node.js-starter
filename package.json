@@ -1,26 +1,5 @@
 {
-  "name": "melvyn-node-starter",
-  "version": "0.0.1",
-  "description": "Node Starter with Mongo, Redis, Suptertest, Jest and many more",
-  "engines": {
-    "node": "12"
-  },
-  "scripts": {
-    "start": "node processes.js",
-    "start:local": "nodemon src/server.js --exec babel-node",
-    "build": "babel src -d dist --ignore **/__tests__/**,**/__mocks__/**",
-    "lint": "eslint 'src/**/*.js'",
-    "unit": "jest \"src/.*\\.js$\" --coverage --forceExit",
-    "e2e": "cross-env JEST_ENV=e2e jest \"src/.*\\.js$\" --forceExit",
-    "_codecov": "codecov",
-    "_heroku": "heroku"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/melvynkim/melvyn-node-starter.git"
-  },
-  "author": "Melvyn Kim <melvynkim@gmai.com>",
-  "license": "MIT",
+  "author": "Melvyn Kim <melvynkim@gmail.com>",
   "dependencies": {
     "bcrypt": "3.0.6",
     "bull": "3.11.0",
@@ -55,9 +34,11 @@
     "request-promise": "4.2.4",
     "rxjs": "6.5.3",
     "socket.io": "2.3.0",
+    "swagger-jsdoc": "^3.5.0",
     "swagger-ui-express": "4.1.2",
     "winston": "3.2.1"
   },
+  "description": "cadenza-sg1-gen-api",
   "devDependencies": {
     "@babel/cli": "7.4.4",
     "@babel/core": "7.4.5",
@@ -80,5 +61,34 @@
     "nodemon": "1.19.1",
     "prettier": "1.18.2",
     "supertest": "4.0.2"
-  }
+  },
+  "engines": {
+    "node": "12"
+  },
+  "license": "MIT",
+  "name": "melvyn-node-starter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melvynkim/melvyn-node-starter"
+  },
+  "scripts": {
+    "_codecov": "codecov",
+    "_heroku": "heroku",
+    "build": "yarn build:source && yarn build:swagger && yarn build:zip",
+    "build:source": "babel src -d dist --ignore **/__tests__/**,**/__mocks__/**",
+    "build:swagger": "node_modules/.bin/swagger-jsdoc -d swagger.json ./src/**/*.js -o swagger.yml",
+    "build:zip": "zip -r9 $(jq '.name' package.json | sed 's/\"//g')-$(git rev-parse --short HEAD) dist/ processes.js package.json Dockerfile swagger.yml",
+    "e2e": "cross-env JEST_ENV=e2e jest \"src/.*\\.js$\" --forceExit",
+    "lint": "esw src/**/*.js --color",
+    "lint:fix": "esw src/**/*.js --fix",
+    "lint:watch": "yarn lint -- --watch",
+    "pre-commit": "yarn run lint:fix",
+    "start": "node processes.js",
+    "start:develop": "cross-env NODE_ENV=develop yarn build:swagger && nodemon src/server.js --exec babel-node",
+    "start:local": "cross-env NODE_ENV=local yarn build:swagger && nodemon src/server.js --exec babel-node",
+    "start:staging": "cross-env NODE_ENV=staging yarn build:swagger && nodemon src/server.js --exec babel-node",
+    "test": "yarn unit && yarn e2e",
+    "unit": "jest \"src/.*\\.js$\" --coverage --forceExit"
+  },
+  "version": "0.0.2"
 }
