@@ -13,11 +13,13 @@ export const RATE_LIMIT = process.env.RATE_LIMIT || 0;
 export const SENTRY_DSN = process.env.SENTRY_DSN || 'https://70484e0dda784a1081081ca9c8237792:51b5a95ee1e545efba3aba9103c6193e@sentry.io/236866';
 export const STATIC_FILES = process.env.STATIC_FILES || null;
 export const RENDERTRON_URL = process.env.RENDERTRON_URL || 'https://render-tron.appspot.com/render';
+export const SERVE_DOCS = process.env.SERVE_DOCS || true;
 
 // FIXME: Fill in below if you want the mail feature
-export const MAILGUN_BASE_URL = 'FIXME';
-export const MAILGUN_API_KEY = 'FIXME';
-export const MAILGUN_DOMAIN = 'FIXME';
-export const MAIL_FROM = 'FIXME';
-export const MAIL_CODE_EXPIRES = 'FIXME';
-export const MAIL_DOMAINS_ALLOWED = 'FIXME';
+export const SES_MAIL_FROM = 'FIXME';
+export const SES_REGION = 'FIXME';
+export const SES_ACCESS_KEY_ID = 'FIXME';
+export const SES_SECRET_ACCESS_KEY = 'FIXME';
+
+export const MAIL_CODE_EXPIRES = process.env.MAIL_CODE_EXPIRES || 30;
+export const MAIL_DOMAINS_ALLOWED = process.env.MAIL_DOMAINS_ALLOWED || '@gmail.com';

@@ -17,7 +17,7 @@ import routes from '~/core/rest';
 import passport from '~/core/passport';
 import redis from '~/core/redis';
 
-import { NODE_ENV, SECRET, RATE_LIMIT, SENTRY_DSN, STATIC_FILES, RENDERTRON_URL } from './env';
+import { NODE_ENV, SECRET, RATE_LIMIT, SENTRY_DSN, STATIC_FILES, RENDERTRON_URL, SERVE_DOCS } from './env';
 
 const app = express();
 
