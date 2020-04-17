@@ -39,7 +39,7 @@
     "socket.io": "2.3.0",
     "swagger-jsdoc": "^3.5.0",
     "swagger-ui-express": "4.1.2",
-    "swig": "^1.4.2",
+    "swig-templates": "^2.0.3",
     "winston": "3.2.1"
   },
   "description": "cadenza-sg1-gen-api",

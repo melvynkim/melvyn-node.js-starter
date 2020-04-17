@@ -1,4 +1,4 @@
-import swig from 'swig';
+import swig from 'swig-templates';
 import AWS from 'aws-sdk';
 import nodemailer from 'nodemailer';
 
