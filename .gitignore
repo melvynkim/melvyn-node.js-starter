@@ -4,3 +4,4 @@ dist
 coverage
 *.log
 swagger.yml
+build.json
