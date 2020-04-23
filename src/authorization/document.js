@@ -26,12 +26,12 @@ const endpointUserScheme = new mongoose.Schema({
   email: {
     type: String,
     validate: [{
-      validator: function(value) {
+      validator(value) {
         return /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(value);
       },
       message: ({ value }) => `${value} is not a valid email format`,
     }, {
-      validator: async function(email) {
+      async validator(email) {
         const sameEmail = await this.model('EndpointUser').countDocuments({ email });
 
         return !sameEmail;
