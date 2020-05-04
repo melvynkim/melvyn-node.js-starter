@@ -1,10 +1,8 @@
-import mailgun from 'mailgun-js'; // eslint-disable-line import/no-unresolved
 import moment from 'moment';
 import mongoose from '~/core/mongoose';
+import { sendEmail } from '~/core/email';
 import { hashPassword, hashCode } from './service';
-import { MAILGUN_BASE_URL, MAILGUN_API_KEY, MAILGUN_DOMAIN, MAIL_FROM, MAIL_CODE_EXPIRES } from '~/env';
-
-const mailClient = mailgun({ apiKey: MAILGUN_API_KEY, domain: MAILGUN_DOMAIN });
+import { HOST, MAIL_CODE_EXPIRES } from '~/env';
 
 /**
  * @swagger
@@ -27,12 +25,19 @@ const endpointUserScheme = new mongoose.Schema({
   },
   email: {
     type: String,
-    validate: {
+    validate: [{
       validator(value) {
         return /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(value);
       },
       message: ({ value }) => `${value} is not a valid email format`,
-    },
+    }, {
+      async validator(email) {
+        const sameEmail = await this.model('EndpointUser').countDocuments({ email });
+
+        return !sameEmail;
+      },
+      message: ({ value }) => `${value} is already registered`,
+    }],
     required: true,
     unique: true,
   },
@@ -56,23 +61,21 @@ const endpointUserScheme = new mongoose.Schema({
 });
 
 endpointUserScheme.methods.sendVerificationEmail = async function sendVerificationEmail() {
-  const message = `Your activationCode is ${this.get('_activationCode')}.
-  
-Or click below link to activate your account:
-${MAILGUN_BASE_URL}/auth/activateAccount?email=${this.get('email')}&activationCode=${this.get('activationCode')} 
-  
-Please note that code expires in ${MAIL_CODE_EXPIRES} minutes`;
-
-  await mailClient.messages().send({
-    from: MAIL_FROM,
+  await sendEmail({
+    subject: 'Your activation code',
     to: this.email,
-    subject: 'Your activation Code',
-    text: message,
+    template: 'activationCode.html',
+    payload: {
+      activationCode: this.get('_activationCode'),
+      hashedActivationCode: this.get('activationCode'),
+      baseUrl: HOST,
+      codeExpires: MAIL_CODE_EXPIRES,
+      email: this.email
+    }
   });
 }
 
 endpointUserScheme.virtual('_activationCode');
-
 
 endpointUserScheme.pre('validate', async function setCode() {
   if (!this.hasActivationCode) {
