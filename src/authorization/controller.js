@@ -20,7 +20,7 @@ const Register = async (req, res) => {
     await user.save();
 
     res.status(200).json({ email, message: 'Sign up suceesfully' });
-  } catch (error) {    
+  } catch (error) {
     res.status(400).json({ message: error.message });
   }
 }
