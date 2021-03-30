@@ -195,7 +195,7 @@ router.get('/activateAccount', ActivateAccount);
  *     description: |
  *       By passing in the appropriate options, you can receive your profile info
  *     security:
- *     	 - jwt token: []
+ *       - jwt token: []
  *     responses:
  *       '200':
  *         description: retrieving User's profile data

@@ -8,7 +8,7 @@ import meta from '~/meta/rest';
 const router = Router();
 
 router.get('/', (req, res) => {
-  res.send('app-root');
+    res.send('app-root');
 });
 
 /**
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- * 			 description: You can obtain your token on /auth/login
+ *       description: You can obtain your token on /auth/login
  *
  * tags:
  *  - name: Auth

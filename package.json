@@ -93,7 +93,7 @@
         "start:develop": "cross-env NODE_ENV=develop yarn build:swagger && yarn build:spec && nodemon src/server.js --exec babel-node",
         "start:local": "cross-env NODE_ENV=local yarn build:swagger && yarn build:spec && nodemon src/server.js --exec babel-node",
         "start:staging": "cross-env NODE_ENV=staging yarn build:swagger && yarn build:spec && nodemon src/server.js --exec babel-node",
-        "test": "yarn unit && yarn e2e",
+        "test": "yarn build && yarn unit && yarn e2e",
         "unit": "jest \"src/.*\\.js$\" --coverage --forceExit"
     },
     "version": "0.0.2"
