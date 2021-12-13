@@ -2,7 +2,7 @@
   "author": "Melvyn Kim <melvynkim@gmail.com>",
   "dependencies": {
     "aws-sdk": "^2.814.0",
-    "bcrypt": "3.0.6",
+    "bcrypt": "5.0.0",
     "bull": "3.11.0",
     "chalk": "2.4.2",
     "compression": "1.7.4",
